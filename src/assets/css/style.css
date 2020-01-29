@@ -1,0 +1,29 @@
+@color-brown: #333;
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin: 0;
+}
+
+.container {
+  min-width: 1366px;
+  margin: 0 auto;
+  padding: 0 30px;
+  padding-top: 10px;
+}
