@@ -9,6 +9,7 @@ body {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 ul {
@@ -27,3 +28,4 @@ h1 {
   padding: 0 30px;
   padding-top: 10px;
 }
+

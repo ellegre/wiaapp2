@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Home from "../views/Home.vue";
+//import AuthForm from "../views/AuthForm.vue"
 
 
 Vue.use(VueRouter);
@@ -31,6 +33,17 @@ const routes = [
     name: "resources",
     component: () =>
       import("../views/Resources.vue")
+  },
+  {
+    path: "/login",
+    name: "AuthForm",
+    component: () =>
+      import("../views/AuthForm.vue")
+  },
+  {
+    path: "*",
+    name: "home",
+    component: Home
   }
 ];
 

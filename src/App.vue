@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-link to="/login">AuthForm</router-link>
     <Header></Header>
     <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -13,9 +14,13 @@
 
 <script>
 import Header from './components/Header.vue'
+
 export default {
   components: {
     Header
+  },
+  computed: {
+
   }
 }
 

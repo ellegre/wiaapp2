@@ -9,6 +9,9 @@ export default {
   name: "List",
   props: {
     msg: String
+  },
+  methods: {
+
   }
 };
 </script>
