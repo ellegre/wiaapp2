@@ -22,8 +22,7 @@ export default new Vuex.Store({
 
   },
   mutations: {
-  	increment: state => state.count++,
-  	decrement: state => state.count-- ,
+  
     openWin: state => {
       window.open(state.url, "_blank", "width=760, height=500, top=300, left=500");
     },

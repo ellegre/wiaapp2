@@ -1,7 +1,6 @@
 <template>
   <div class="auth container">
     <iframe class="wialon__form" v-bind:src="url"></iframe>
-    <button @click="getToken">token</button>
   </div>
 </template>
 <script>
@@ -17,9 +16,9 @@ export default {
 	},
 	methods: {
       getToken() {
-		this.$store.commit("getToken")
-	  },
-    }
+  		  this.$store.commit("getToken")
+  	  },
+  }
 };
 </script>
 <style >
