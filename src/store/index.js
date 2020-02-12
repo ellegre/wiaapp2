@@ -15,8 +15,7 @@ export default new Vuex.Store({
     currentMessage: null,
     objects: [],
     feature: [],
-    url: "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0x100&activation_time=0&duration=604800&flags=0x1&redirect_uri=https://hosting.wialon.com/post_token.html" + "&css_url="
-        + encodeURIComponent("http://localhost:8080/src/assets/css/login-form.css"),
+    url: "https://hosting.wialon.com/login.html?",
   },
   getters: {
 
@@ -36,7 +35,8 @@ export default new Vuex.Store({
         return state.token;
         }
       }
-    }
+    },
+
   },
 
   actions: {

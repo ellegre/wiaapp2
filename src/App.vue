@@ -4,7 +4,8 @@
       <p>The information is not available at the moment, please try back later</p>
     </section>
     <section v-else>
-      <div v-if="loading">Loading...</div>
+      <iframe v-if="starting" class="wialon__form" v-bind:src="getUrl"></iframe>
+      <div v-else-if="loading">Loading...</div>
       <div v-else>
         <Header></Header>
         <div id="nav">
@@ -20,9 +21,13 @@
 </template>
 
 <script>
+
+
 import Header from './components/Header.vue'
 //import axios from "axios";
 //import VueAxios from "vue-axios";
+
+
 
 export default {
   components: {
@@ -31,12 +36,15 @@ export default {
   data() {
     return {
       info: null,
-      loading: false,
+      starting: true,
+      loading: true,
       errored: false
     };
   },
   computed: {
-     
+     getUrl() {
+      return this.$store.state.url
+     }
   },
 
   filters: {
@@ -47,11 +55,14 @@ export default {
   }
 }
 
+
 </script>
 
 <style lang="less">
 #app {
-  
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 #nav {
@@ -69,5 +80,17 @@ export default {
       text-decoration: underline;
     }
   }
+}
+
+iframe {
+  position: absolute;
+  content: "";
+  top: 10%;
+  left: 50%;
+  margin-left: -300px;
+  width: 600px;
+  min-height: 470px;
+  border: none;
+  background: none;
 }
 </style>

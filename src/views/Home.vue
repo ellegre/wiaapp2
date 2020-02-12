@@ -1,7 +1,7 @@
 <template>
   <div class="home container">
-  	<h1>Home component</h1>
-  	<LoadingAnimation />
+    <h1>Home component</h1>
+    <LoadingAnimation />
     <Table />
   </div>
 </template>

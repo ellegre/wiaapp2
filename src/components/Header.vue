@@ -66,9 +66,6 @@ export default {
   &:focus {
     background-color: #43853d;
   }
-
-
-
 }
 
 

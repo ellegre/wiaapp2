@@ -8,14 +8,14 @@
 //import { mapState } from 'vuex';	
 export default {
 	computed: {
-      url() {
-		return this.$store.state.url
-	  }
+		url() {
+			return this.$store.state.url
+		}
 	},
 	methods: {
-      openWin() {
-		this.$store.commit("openWin")
-	  }
+		openWin() {
+			this.$store.commit("openWin")
+		}
     }
 };
 </script>
