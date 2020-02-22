@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-//import App from '../App.vue'
 
 Vue.use(Vuex);
 
-const URL = "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0x100&activation_time=0&duration=604800&flags=0x1&redirect_uri=https://hosting.wialon.com/post_token.html"
+const URL = "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0xffff&activation_time=0&duration=604800&flags=0x1&redirect_uri=https://hosting.wialon.com/post_token.html"
+
 
 export default new Vuex.Store({
-
+  
+  const session = wialon.core.Session.getInstance();
   state: {
-    count: 5,
-    token: 0,
+    token: null,
     user: {
       name: null
     },
@@ -32,19 +32,25 @@ export default new Vuex.Store({
     },
     authenticated: state => {
       return state.authenticated;
+    },
+    user: state => {
+      return state.user.name;
     }
   },
   mutations: {
-    SET_TOKEN(state, payload) {
-      state.token = payload;
+    SET_TOKEN(state, token) {
+      state.token = token;
     },
     IS_AUTH(state){
       state.authenticated = 'done';
+    },
+    SET_NAME(state, payload) {
+      state.user.name = payload;
     }
   },
 
   actions: {
-    loadToken(context) {
+    setToken(context) {
       let token;
       window.onmessage = function (e) {
         let msg = e.data;
@@ -53,7 +59,27 @@ export default new Vuex.Store({
           context.commit('SET_TOKEN', token)
         }
       }
-    }      
+    },
+    setName({commit}) {
+      window.onmessage = function (e) {
+        let msg = e.data;
+        if (typeof msg == "string" && msg.indexOf("user_name=") >= 0) {
+          let name = msg.replace("user_name=", "");
+          commit('SET_NAME', name)
+        }
+      }
+    },
+    loginToken({commit}) {
+      
+      session.initSession('https://hst-api.wialon.com');
+      session.loginToken(state.token, (code) => {
+       const user = session.getCurrUser()
+        const aa = user.getName()
+        console.log(aa)
+      });
+
+    }
+    
   },
 
   modules: {}

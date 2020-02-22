@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <span id="success"></span>
-    <div>Total: {{token}}</div>
-    <button @click="setToken">{{token}}</button>
+    <div>Total: {{loginToken}} {{token}}</div>
     <section v-if="errored">
       <p>The information is not available at the moment, please try back later</p>
     </section>
@@ -29,6 +28,14 @@
 import Header from './components/Header.vue'
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 
+
+ 
+  // инициализации сессии
+  var session = wialon.core.Session.getInstance();
+  
+
+
+
 export default {
   components: {
     Header
@@ -47,49 +54,40 @@ export default {
       'token',
       'total',
       'authenticated',
-    ])  
+      'user'
+    ]),
+    loginToken() {
+      session.initSession('https://hst-api.wialon.com');      
+      session.loginToken(this.$store.getters.token, (code) => {
+        const user = session.getCurrUser()
+        const aa = user.getName()
+        console.log(aa)
+      });
+
+    }
   },
   methods: {
-    ...mapMutations([
-      'plusToken',
-      'isAuth'
-      ]),
-    setToken() {
-      
-      this.$store.commit('setToken', token)
-    },
     ...mapActions([
-      'loadToken'
-      ])
+      'setToken',
+      'setName',
+      'loginToken'
+    ]),
+    load() {
+      this.$store.dispatch('setToken');
+    }
   },
      
   filters: {
     
   },
   mounted() {
-    
+
   },
   created() {
-    this.$store.dispatch('loadToken');
+    this.load()
   }
 }
 
-/*let token;
-window.onmessage = function (e) {
-  var msg = e.data;
-  if (typeof msg == "string" && msg.indexOf("access_token=") >= 0) {
-    token = msg.replace("access_token=", "");
-    console.log('первый вывод', token)
-  var el = document.getElementById("success");
-    if (el) {
-      el.innerHTML = "Your token: " + token;
-    }
-  }
-};
-      
-store.dispatch
-*/
-   
 </script>
 
 <style lang="less">
@@ -123,7 +121,7 @@ iframe {
   left: 50%;
   margin-left: -300px;
   width: 600px;
-  min-height: 470px;
+  min-height: 450px;
   border: none;
   background: none;
 }
