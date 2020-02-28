@@ -1,14 +1,10 @@
 <template>
   <div id="app">
-    <span id="success"></span>
-    <div>Total: {{loginToken}} {{token}}</div>
-    <section v-if="errored">
-      <p>The information is not available at the moment, please try back later</p>
+    <section class="iframe">
+     <iframe class="wialon__form" v-bind:src="url"></iframe> 
     </section>
-    <section v-else>
-      <iframe v-if="starting" class="wialon__form" v-bind:src="url"></iframe>
-      <div v-else-if="loading">Loading...</div>
-      <div v-else>
+    <section v-if="authenticated" class="page">
+      <div>
         <Header></Header>
         <div id="nav">
           <router-link to="/">Home</router-link> |
@@ -17,6 +13,8 @@
           <router-link to="/resources">Resources</router-link>
         </div>
         <router-view></router-view> 
+        <div>Loading...</div>
+        <div>Total: {{token}}</div>
       </div>
     </section>
   </div>
@@ -26,16 +24,13 @@
 
 
 import Header from './components/Header.vue'
-import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 
  
-  // инициализации сессии
-  var session = wialon.core.Session.getInstance();
+//инициализации сессии
+//const session = wialon.core.Session.getInstance();
   
-
-
-
 export default {
   components: {
     Header
@@ -43,9 +38,7 @@ export default {
   data() {
     return {
       info: null,
-      starting: true,
       loading: true,
-      errored: false
     };
   },
   computed: {
@@ -56,7 +49,8 @@ export default {
       'authenticated',
       'user'
     ]),
-    loginToken() {
+
+    /*loginToken() {
       session.initSession('https://hst-api.wialon.com');      
       session.loginToken(this.$store.getters.token, (code) => {
         const user = session.getCurrUser()
@@ -64,7 +58,7 @@ export default {
         console.log(aa)
       });
 
-    }
+    }*/
   },
   methods: {
     ...mapActions([
