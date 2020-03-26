@@ -1,22 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import moduleUser from './modules/user';
 
 Vue.use(Vuex);
 const URL = "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0xffff&activation_time=0&duration=604800&flags=0x1&redirect_uri=https://hosting.wialon.com/post_token.html";
-//const session = wialon.core.Session.getInstance();
+
+const wialon = window.wialon;
+const session = wialon.core.Session.getInstance();
 
 export default new Vuex.Store({
   state: {
-    token: null,
-    user: {
-      name: null
-    },
+    token: null,    
     authenticated: null,  
     currentMessage: null,
     objects: [],
     feature: [],
     url: URL,
-    session: null
+    session: null,
+    value: 0
   },
   getters: {
     url: state => {
@@ -25,17 +26,14 @@ export default new Vuex.Store({
     token: state => {
       return state.token;
     },
-    total: state => {
-      return state.count * state.token;
-    },
     authenticated: state => {
       return state.authenticated;
-    },
-    user: state => {
-      return state.user.name;
-    },
+    },    
     session: state => {
       return state.session;
+    },
+    value: state => {
+      return state.value;
     }
   },
   mutations: {
@@ -45,15 +43,24 @@ export default new Vuex.Store({
     IS_AUTHENTICATED(state){
       state.authenticated = true;
     },
-    SET_NAME(state, payload) {
-      state.user.name = payload;
+    SET_SESSION(state) {      
+      session.initSession("https://hst-api.wialon.com");
+      session.loadLibrary("itemIcon");
+      session.loadLibrary("unitSensors");
+      session.loadLibrary("unitEvents");
+      session.loadLibrary("itemCustomFields");
+      session.loadLibrary("itemProfileFields");
+      session.loadLibrary("resourceReports");
+      session.loadLibrary("unitTripDetector");
+      state.session = session;      
     },
-    SET_SESSION(state, session) {
-      state.session = session;
+    
+    updateValue(state, value) {
+      state.value = value;
     }
   },
   actions: {
-    setToken({commit}) {
+    setToken({commit, state}) {
       let token;
       window.onmessage = function (e) {
         let msg = e.data;
@@ -62,30 +69,28 @@ export default new Vuex.Store({
           commit('SET_TOKEN', token);
           commit('SET_SESSION');
           commit('IS_AUTHENTICATED');
+
+          session.loginToken(state.token, code => {
+            if(code) {
+              console.log(code);
+            }
+            wialon.core.Remote.getInstance().startBatch("initBatch");
+            const user = session.getCurrUser();
+            console.log(user)
+            const id = user.getLoginDate();
+            console.log(wialon.util.DateTime.formatTime(id))
+            const userName = user.getName();
+            commit('user/SET_NAME', userName); 
+
+          })
         }
       }
     },
-    setName({commit}) {
-      window.onmessage = function (e) {
-        let msg = e.data;
-        if (typeof msg == "string" && msg.indexOf("user_name=") >= 0) {
-          let name = msg.replace("user_name=", "");
-          commit('SET_NAME', name)
-        }
-      }
+    updateValue({commit}, value) {
+      commit('updateValue', value)
     },
-    /*loginToken({commit}) {
-      session.initSession("https://hst-api.wialon.com");
-      session.loginToken(state.token, code => {
-        if(code) {
-          console.log(code);
-        }
-      const user = session.getCurrUser();
-      const aa = user.getName();
-      console.log(aa);
-      commit('IS_AUTH')
-      });
-    }*/
   },
-  modules: {}
+  modules: {
+    user: moduleUser
+  }
 });

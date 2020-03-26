@@ -1,44 +1,48 @@
 <template>
   <div id="app">
-    <section class="iframe">
+    <section v-if="!authenticated" class="iframe">
      <iframe class="wialon__form" v-bind:src="url"></iframe> 
     </section>
     <section v-if="authenticated" class="page">
       <div>
-        <Header></Header>
+        <Header></Header>     
         <div id="nav">
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link> |
           <router-link to="/geofences">Geofences</router-link> |
-          <router-link to="/resources">Resources</router-link>
+          <router-link to="/resources">Resources</router-link> | 
+          <router-link to="/user">User</router-link>
         </div>
         <router-view></router-view> 
-        <div>Loading...</div>
-        <div>Total: {{token}}</div>
+        <button @click="show = !show">Know how</button>
+        <transition name="fade" appear>
+          <div v-if="show">This is a text about details</div>
+        </transition>
+        <input type="text" v-model="value">
+        <p>{{value}}</p>
       </div>
     </section>
   </div>
 </template>
-
 <script>
 
 
-import Header from './components/Header.vue'
+import Header from './components/Header.vue';
+
 import { mapGetters, mapActions } from 'vuex';
 
-
- 
 //инициализации сессии
 //const session = wialon.core.Session.getInstance();
   
 export default {
   components: {
-    Header
+    Header,
   },
   data() {
     return {
       info: null,
       loading: true,
+      show: false
     };
   },
   computed: {
@@ -47,28 +51,28 @@ export default {
       'token',
       'total',
       'authenticated',
-      'user'
+      'user',
+      'value'
     ]),
-
-    /*loginToken() {
-      session.initSession('https://hst-api.wialon.com');      
-      session.loginToken(this.$store.getters.token, (code) => {
-        const user = session.getCurrUser()
-        const aa = user.getName()
-        console.log(aa)
-      });
-
-    }*/
+    value: {
+      get() {
+        return this.$store.getters.value;
+      },
+      set(value) {
+        this.$store.dispatch('updateValue', value);
+      }
+    }
   },
   methods: {
     ...mapActions([
       'setToken',
       'setName',
-      'loginToken'
+      'loginToken',
+      'updateValue'
     ]),
     load() {
       this.$store.dispatch('setToken');
-    }
+    },
   },
      
   filters: {
@@ -118,5 +122,21 @@ iframe {
   min-height: 450px;
   border: none;
   background: none;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity 0.5s;
+}
+.fade-leave {
+  //opacity: 1;
+}
+
+.fade-leave-active {
+  transition: opacity 0.5s;
+  opacity: 0;
 }
 </style>
