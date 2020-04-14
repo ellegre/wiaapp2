@@ -4,7 +4,7 @@
         <h1 class="header__title">Tracking systems</h1>
         <img class="header__logo" src="../assets/track.png" width="40" height="40" alt="logo">
         <div class="logout">
-          <span class="logout__span" id="username">{{  userName || `` }}</span>        
+          <span class="logout__span" id="username">{{  username || `` }}</span>        
           <button class="logout__btn">exit</button>  
         </div>        
       </div>
@@ -17,9 +17,8 @@
 export default {
 
   computed: {
-     userName() {
-      return this.$store.getters['user/user'];
- 
+     username() {
+      return this.$store.getters['user/userName'];
     }
   }
 };

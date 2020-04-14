@@ -14,12 +14,9 @@
           <router-link to="/user">User</router-link>
         </div>
         <router-view></router-view> 
-        <button @click="show = !show">Know how</button>
-        <transition name="fade" appear>
-          <div v-if="show">This is a text about details</div>
-        </transition>
         <input type="text" v-model="value">
         <p>{{value}}</p>
+        <Message></Message>
       </div>
     </section>
   </div>
@@ -28,6 +25,7 @@
 
 
 import Header from './components/Header.vue';
+import Message from './components/Message.vue';
 
 import { mapGetters, mapActions } from 'vuex';
 
@@ -37,12 +35,11 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   components: {
     Header,
+    Message
   },
   data() {
     return {
-      info: null,
-      loading: true,
-      show: false
+      
     };
   },
   computed: {
@@ -52,7 +49,7 @@ export default {
       'total',
       'authenticated',
       'user',
-      'value'
+      'value',
     ]),
     value: {
       get() {
@@ -68,10 +65,14 @@ export default {
       'setToken',
       'setName',
       'loginToken',
-      'updateValue'
+      'updateValue',
+      'showObjects',
+      'actionB'
     ]),
+
     load() {
-      this.$store.dispatch('setToken');
+      this.$store.dispatch('actionB');
+ 
     },
   },
      
@@ -81,7 +82,7 @@ export default {
   mounted() {
 
   },
-  created() {
+  async created() {
     this.load()
   }
 }
