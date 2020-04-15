@@ -50,6 +50,7 @@ export default {
       'authenticated',
       'user',
       'value',
+      'codeMessage'
     ]),
     value: {
       get() {

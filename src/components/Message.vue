@@ -1,5 +1,5 @@
 <template>
-  <div v-if="textMessage" class="message popup">
+  <div v-if="textMessage"  v-click-outside="onClose"  class="message popup">
     <p class="message__text">{{textMessage}}</p>
     <button v-on:click="onClose" type="button" class="popup__close">Close</button>
   </div>
@@ -9,14 +9,14 @@
 export default {
   computed: {
      textMessage() {
-      return this.$store.getters['message/message'];
+      return this.$store.getters['message/codeMessage'];
     }
   },
   methods: {
     onClose() {
-      this.$store.getters['message/message'].style.display = 'block';
+      this.$store.commit('message/CLOSE_MESSAGE');
     }
-  }
+  },
 }
 </script>
 

@@ -1,28 +1,21 @@
 export default {  
   namespaced: true,
   state: {
-    code: null
+    text: 2
   },
 
   getters: {
     codeMessage: state => {
-      return state.code;
-
-    },
-   
-
-  },
-
-  actions: {
+      return state.text;
+    }
   },
 
   mutations: {
-    SET_CODE(state, text) {
-      state.code = text;
+    SET_TEXT(state, text) {
+      state.text = text;
     },
     CLOSE_MESSAGE(state) {
-      state.message = null;
+      state.text = null;
     }
-
   }
 }

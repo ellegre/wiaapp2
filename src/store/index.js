@@ -13,6 +13,11 @@ const URL = "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0
 const wialon = window.wialon;
 const session = wialon.core.Session.getInstance();
 
+
+
+
+
+
 export default new Vuex.Store({
 
   state: {
@@ -76,7 +81,7 @@ export default new Vuex.Store({
             session.loginToken(state.token, code => {
               if(code) {
                 console.log(code);
-                reject(commit('message/SET_CODE', code));
+                reject(commit('message/SET_TEXT', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`));
               }
               resolve()
             })
