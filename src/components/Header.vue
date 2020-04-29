@@ -5,7 +5,7 @@
         <img class="header__logo" src="../assets/track.png" width="40" height="40" alt="logo">
         <div class="logout">
           <span class="logout__span" id="username">{{  username || `` }}</span>        
-          <button class="logout__btn">exit</button>  
+          <button @click="logoutApp" class="logout__btn">exit</button>  
         </div>        
       </div>
       
@@ -20,9 +20,15 @@ export default {
      username() {
       return this.$store.getters['user/userName'];
     }
+  },
+  methods: {
+    logoutApp() {
+      this.$store.dispatch('appLogout')
+    }
   }
 };
 </script>
+
 
 <style scoped lang="less">
 

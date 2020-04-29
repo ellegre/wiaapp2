@@ -1,7 +1,7 @@
 export default {  
   namespaced: true,
   state: {
-    text: 2
+    text: null
   },
 
   getters: {

@@ -13,11 +13,6 @@ const URL = "https://hosting.wialon.com/login.html?client_id=myApp&access_type=0
 const wialon = window.wialon;
 const session = wialon.core.Session.getInstance();
 
-
-
-
-
-
 export default new Vuex.Store({
 
   state: {
@@ -48,8 +43,14 @@ export default new Vuex.Store({
     SET_TOKEN(state, token) {
       state.token = token;
     },
+    DELETE_TOKEN(state) {
+      state.token = null;
+    },
     IS_AUTHENTICATED(state){
       state.authenticated = true;
+    },
+    NOT_AUTENTICATED(state) {
+      state.authenticated = false;
     },
     SET_SESSION(state) {      
       session.initSession("https://hst-api.wialon.com");
@@ -61,6 +62,9 @@ export default new Vuex.Store({
       session.loadLibrary("resourceReports");
       session.loadLibrary("unitTripDetector");*/
       state.session = session;      
+    },
+    DELETE_SESSION(state) {
+      state.session = {};
     },
     
     updateValue(state, value) {
@@ -89,7 +93,7 @@ export default new Vuex.Store({
         }
       })
     },
-    actionB ({dispatch}) {
+    setAuthData ({dispatch}) {
       return dispatch('setToken').then(() => {
         dispatch('user/setUserData');
       })
@@ -97,10 +101,38 @@ export default new Vuex.Store({
     updateValue({commit}) {
       commit('updateValue', 100)
     },
-  },
-  modules: {
-    user: moduleUser,
-    objects: moduleObjects,
-    message: moduleMessage
-  }
+    clearSessionData ({commit}) {
+      commit('DELETE_TOKEN');
+      commit('NOT_AUTENTICATED');
+      commit('user/DELETE_NAME');
+      commit('DELETE_SESSION');
+    },
+    logout ({commit}) {  
+      return new Promise((resolve, reject) => {
+        wialon.core.Session.getInstance().logout(
+
+          function (code) { // logout callback
+            const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+            if (code) {
+              reject(commit('message/SET_TEXT', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`)); // logout failed, print error
+            } else {
+            commit('message/SET_TEXT', "Logout successfully!");
+            resolve(wait(3000).then(() => commit('message/CLOSE_MESSAGE')));                      
+            
+            }
+          }) 
+        })
+      },
+
+      appLogout ({dispatch}) {
+      return dispatch('logout').then(() => {
+        dispatch('clearSessionData').catch(error => console.log(error));
+        }) 
+      }
+    },
+    modules: {
+      user: moduleUser,
+      objects: moduleObjects,
+      message: moduleMessage
+    }
 });

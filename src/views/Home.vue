@@ -9,6 +9,7 @@
 <script>
 // @ is an alias to /src
 import Table from "@/components/Table.vue";
+
 import LoadingAnimation from "@/components/LoadingAnimation.vue";
 
 export default {

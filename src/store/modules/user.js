@@ -51,6 +51,9 @@ export default {
     SET_NAME(state, name) {
       state.user.name = name;
     },
+    DELETE_NAME(state) {
+      state.user.name = null;
+    },
     SET_HOST_MASK(state, payload) {
       if (payload == "") {
         return state.user.hostMask

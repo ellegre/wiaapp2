@@ -39,7 +39,8 @@ export default {
   },
   data() {
     return {
-      
+
+
     };
   },
   computed: {
@@ -68,12 +69,11 @@ export default {
       'loginToken',
       'updateValue',
       'showObjects',
-      'actionB'
+      'setAuthData',
+      'logout'
     ]),
-
     load() {
-      this.$store.dispatch('actionB');
- 
+      this.$store.dispatch('setAuthData'); 
     },
   },
      

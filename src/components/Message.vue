@@ -1,29 +1,42 @@
 <template>
   <div v-if="textMessage"  v-click-outside="onClose"  class="message popup">
-    <p class="message__text">{{textMessage}}</p>
-    <button v-on:click="onClose" type="button" class="popup__close">Close</button>
+    <p :class="className" class="message__text">{{textMessage}}</p>
+    <div v-show="textMessage !== 'Logout successfully!' " class="button__wrapper">
+      <Button @click="onClose"/>
+    </div>
   </div>
 </template>
 
 <script>
+import Button from './Button.vue';
 export default {
+  data() {
+    return {}
+  },
+  components: {
+    Button
+  },
   computed: {
-     textMessage() {
+    textMessage() {      
       return this.$store.getters['message/codeMessage'];
+    },
+    className() {
+      return {
+        'success': this.$store.getters['message/codeMessage'] === 'Logout successfully!'
+      }
     }
   },
   methods: {
     onClose() {
       this.$store.commit('message/CLOSE_MESSAGE');
     }
-  },
+  }
 }
 </script>
 
 <style>
 .message {
   width: 500px;
-  height: 200px;
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -38,31 +51,18 @@ export default {
 }
 
 .message__text {
-  font-size: 18px;
+  font-size: 24px;
   margin: 0;
   padding: 10px;
-  margin-bottom: 35px;
-
+  margin-bottom: 10px;
 }
 
-.popup__close {
-  margin-top: 0 auto;
-  padding: 10px;
-  box-sizing: border-box;
-  font-size: 18px;
-  width: 180px;
-  cursor: pointer;
-  border-radius: 22px;
-  background-color: #E3F6CE;
+.button__wrapper {
+  margin: 0 auto;
+  width: 140px;
 }
 
-.popup__close:hover,
-.popup__close:focus {
-  background-color: #D0F5A9;
-}
-
-.popup__close:active {
-  background-color: #BEF781;
-  outline: none;
+.success {
+  color: #43853d;
 }
 </style>
