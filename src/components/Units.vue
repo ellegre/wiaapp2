@@ -29,25 +29,28 @@
 </template>
 
 <script>
-import {mapActions } from 'vuex';
+import {mapActions, mapMutations } from 'vuex';
 export default {
   computed: {
     getObjects() {
-      return this.$store.getters['objects/objects'];
+      return this.$store.getters['units/units'];
     }
   },
   methods: {
     ...mapActions([
-      'showObjects'
+      'showUnits'
     ]),
     loadObjects() {
-      this.$store.dispatch('objects/showObjects');
+      this.$store.dispatch('units/showUnits');
     },
+    ...mapMutations([
+      'SET_TEXT'
+    ]) 
   },
 
-  //created() {
-    //this.loadObjects()
-  //}
+  mounted() {
+    this.loadObjects()
+  }
 }
 
 </script>

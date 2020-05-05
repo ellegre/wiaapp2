@@ -83,7 +83,7 @@ export default {
   mounted() {
 
   },
-  async created() {
+  created() {
     this.load()
   }
 }

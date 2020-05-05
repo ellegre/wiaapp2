@@ -1,21 +1,29 @@
 export default {  
   namespaced: true,
   state: {
-    objects: [],
-    object: {
+    units: [],
+    unit: {
       icon: null,
     }
   },
 
   getters: {
-    objects: state => {
-      return state.objects;
+    units: state => {
+      return state.units;
     },
   },
 
   actions: {
-    showObjects({commit, rootGetters}) {
+    showUnits({commit}) {
       const wialon = window.wialon;
+      const session = wialon.core.Session.getInstance();
+      session.loadLibrary("itemIcon");
+      session.loadLibrary("unitSensors");
+      session.loadLibrary("unitEvents");
+      session.loadLibrary("itemCustomFields");
+      session.loadLibrary("itemProfileFields");
+      session.loadLibrary("resourceReports");
+      session.loadLibrary("unitTripDetector");
       const searchSpec = {
         itemsType:"avl_unit",
         propName: "sys_name",
@@ -33,22 +41,21 @@ export default {
                       wialon.item.Unit.dataFlag.restricted
 
 
-      rootGetters.session.searchItems(searchSpec, true, dataFlags, 0, 0, (code, data) => {
-        console.log(1)
+      session.searchItems(searchSpec, true, dataFlags, 0, 0, (code, data) => {
         if (code) {
-          this.showMessage(`Error ${code} - ${wialon.core.Errors.getErrorText(code)}`);
+          //dispatch('message/setText', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`, null, {root:true})
           console.log(code)
           return;
-        }
+        } 
         console.log(data);
-        commit('SET_OBJECTS', data)
+        commit('SET_UNITS', data)
       })
     }     
   },
 
   mutations: {
-    SET_OBJECTS (state, payload) {
-      state.objects = payload;
+    SET_UNITS (state, payload) {
+      state.units = payload;
     }
   }
 }

@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import moduleUser from './modules/user';
-import moduleObjects from './modules/objects';
+import moduleUnits from './modules/units';
 import moduleMessage from './modules/message';
 //import utils from './utils';
 
@@ -72,7 +72,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setToken({commit, state}) {
+    setToken({commit, dispatch, state}) {
       return new Promise((resolve, reject) => {
         let token;
         window.onmessage = function (e) {
@@ -85,7 +85,7 @@ export default new Vuex.Store({
             session.loginToken(state.token, code => {
               if(code) {
                 console.log(code);
-                reject(commit('message/SET_TEXT', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`));
+                reject(dispatch('message/setText', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`));
               }
               resolve()
             })
@@ -95,7 +95,8 @@ export default new Vuex.Store({
     },
     setAuthData ({dispatch}) {
       return dispatch('setToken').then(() => {
-        dispatch('user/setUserData');
+        dispatch('user/setUserData').then(() => 
+          dispatch('units/showUnits'));
       })
     },
     updateValue({commit}) {
@@ -107,23 +108,21 @@ export default new Vuex.Store({
       commit('user/DELETE_NAME');
       commit('DELETE_SESSION');
     },
-    logout ({commit}) {  
+    logout ({dispatch}) {  
       return new Promise((resolve, reject) => {
         wialon.core.Session.getInstance().logout(
 
           function (code) { // logout callback
             const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
             if (code) {
-              reject(commit('message/SET_TEXT', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`)); // logout failed, print error
+              reject(dispatch('message/setText', `Error ${code} - ${wialon.core.Errors.getErrorText(code)}`)); // logout failed, print error
             } else {
-            commit('message/SET_TEXT', "Logout successfully!");
-            resolve(wait(3000).then(() => commit('message/CLOSE_MESSAGE')));                      
-            
+            dispatch('message/setText', "Logout successfully!");
+            resolve(wait(2000).then(() => dispatch('message/closeMessage')));                                
             }
           }) 
         })
       },
-
       appLogout ({dispatch}) {
       return dispatch('logout').then(() => {
         dispatch('clearSessionData').catch(error => console.log(error));
@@ -132,7 +131,7 @@ export default new Vuex.Store({
     },
     modules: {
       user: moduleUser,
-      objects: moduleObjects,
+      units: moduleUnits,
       message: moduleMessage
     }
 });

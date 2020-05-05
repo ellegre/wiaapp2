@@ -10,6 +10,15 @@ export default {
     }
   },
 
+  actions: {
+    setText ({commit}, payload) {
+      commit('SET_TEXT', payload);
+    },
+    closeMessage({commit}) {
+      commit('CLOSE_MESSAGE');
+    }
+  },
+
   mutations: {
     SET_TEXT(state, text) {
       state.text = text;
