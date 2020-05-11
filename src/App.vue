@@ -81,9 +81,6 @@ export default {
     
   },
   mounted() {
-
-  },
-  created() {
     this.load()
   }
 }

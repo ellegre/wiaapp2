@@ -1,8 +1,6 @@
 <template>
   <div class="units__container">
-
     <table class="units__table">
-      <tr>{{getObjects}}</tr>
       <tr>
         <th>#</th>
         <th></th>
@@ -20,8 +18,12 @@
         <th>Current idling time</th>
         <th>Moving state</th>
       </tr>
-      
-
+      <tr v-for="(unit, index) in units" v-bind:key="unit.id" >
+        <td>{{ index + 1 }}</td>
+        <td><img v-bind:src="unit.icon" width="25" height="25"></td>
+        <td>{{ unit.name }}</td>
+        <td>{{ unit.plateNumber }}</td>
+      </tr>      
     </table>
 
     <!--<span class="units__span">Total units count: {{getTotalCount}}</span>-->
@@ -29,34 +31,29 @@
 </template>
 
 <script>
-import {mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   computed: {
-    getObjects() {
-      return this.$store.getters['units/units'];
-    }
+    ...mapGetters({
+      units: 'units/units',
+      icon: 'units/icon',
+      name: 'units/name',
+      plateNumber: 'units/plateNumber',
+    })
   },
   methods: {
     ...mapActions([
-      'showUnits'
     ]),
-    loadObjects() {
-      this.$store.dispatch('units/showUnits');
-    },
+
     ...mapMutations([
       'SET_TEXT'
     ]) 
   },
-
-  mounted() {
-    this.loadObjects()
-  }
-}
+};
 
 </script>
 
 <style scoped lang="less">
-
 li {
   display: inline-block;
   margin: 0 10px;
