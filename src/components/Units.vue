@@ -1,6 +1,7 @@
 <template>
   <div class="units__container">
     <table class="units__table">
+      <p>{{units1}}</p>
       <tr>
         <th>#</th>
         <th></th>
@@ -23,6 +24,12 @@
         <td><img v-bind:src="unit.icon" width="25" height="25"></td>
         <td>{{ unit.name }}</td>
         <td>{{ unit.plateNumber }}</td>
+        <td>{{ unit.lastMessage }}</td>
+        <td>{{ unit.address }}</td>
+        <td>{{ unit.speed }}</td>
+        <td>{{unit.mileage}}</td>
+
+
       </tr>      
     </table>
 
@@ -31,23 +38,23 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters({
-      units: 'units/units',
+      units1: 'Units/units1',
+      units: 'Units/units',
       icon: 'units/icon',
       name: 'units/name',
       plateNumber: 'units/plateNumber',
+      lastMessage: 'units/lastMessage',
+      address: 'units/address',
+      speed: 'units/speed',
+      mileage: 'units/mileage'
     })
   },
   methods: {
-    ...mapActions([
-    ]),
 
-    ...mapMutations([
-      'SET_TEXT'
-    ]) 
   },
 };
 

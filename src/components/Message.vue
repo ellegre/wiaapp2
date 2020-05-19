@@ -18,17 +18,17 @@ export default {
   },
   computed: {
     textMessage() {      
-      return this.$store.getters['message/codeMessage'];
+      return this.$store.getters['Message/codeMessage'];
     },
     className() {
       return {
-        'success': this.$store.getters['message/codeMessage'] === 'Logout successfully!'
+        'success': this.$store.getters['Message/codeMessage'] === 'Logout successfully!'
       }
     }
   },
   methods: {
     onClose() {
-      this.$store.commit('message/CLOSE_MESSAGE');
+      this.$store.commit('Message/CLOSE_MESSAGE');
     }
   }
 }

@@ -11,7 +11,7 @@ import {mapGetters} from 'vuex';
 export default {
   
   computed: {
-   ...mapGetters('user',[
+   ...mapGetters('User',[
       'userHostMask',
       'userLoginDate',
       'userId'
@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     getValue() {
-      this.$store.dispatch('user/setValue');
+      this.$store.dispatch('User/setValue');
     }
   },
   mounted() {
