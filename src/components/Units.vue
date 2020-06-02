@@ -1,7 +1,8 @@
 <template>
   <div class="units__container">
+    <p>{{}}</p>
     <table class="units__table">
-      <p>{{units1}}</p>
+
       <tr>
         <th>#</th>
         <th></th>
@@ -19,18 +20,17 @@
         <th>Current idling time</th>
         <th>Moving state</th>
       </tr>
-      <tr v-for="(unit, index) in units" v-bind:key="unit.id" >
+      <tr v-for="(unit, index) in units" v-bind:key="unit.id">
         <td>{{ index + 1 }}</td>
         <td><img v-bind:src="unit.icon" width="25" height="25"></td>
-        <td>{{ unit.name }}</td>
+        <td>{{ unit.names }}</td>
+        <td>{{ unit.names }}</td>
         <td>{{ unit.plateNumber }}</td>
         <td>{{ unit.lastMessage }}</td>
         <td>{{ unit.address }}</td>
         <td>{{ unit.speed }}</td>
         <td>{{unit.mileage}}</td>
-
-
-      </tr>      
+      </tr>    
     </table>
 
     <!--<span class="units__span">Total units count: {{getTotalCount}}</span>-->
@@ -42,15 +42,14 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters({
-      units1: 'Units/units1',
       units: 'Units/units',
       icon: 'units/icon',
-      name: 'units/name',
+      names: 'units/names',
       plateNumber: 'units/plateNumber',
       lastMessage: 'units/lastMessage',
       address: 'units/address',
       speed: 'units/speed',
-      mileage: 'units/mileage'
+      mileage: 'units/mileage',
     })
   },
   methods: {

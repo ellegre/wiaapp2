@@ -28,9 +28,6 @@ import Header from './components/Header.vue';
 import Message from './components/Message.vue';
 
 import { mapGetters, mapActions } from 'vuex';
-
-//инициализации сессии
-//const session = wialon.core.Session.getInstance();
   
 export default {
   components: {
@@ -39,7 +36,6 @@ export default {
   },
   data() {
     return {
-
 
     };
   },
@@ -74,7 +70,7 @@ export default {
     ]),
     load() {
       this.$store.dispatch('setAuthData'); 
-    },
+    }
   },
      
   filters: {

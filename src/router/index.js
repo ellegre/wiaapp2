@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
 import Home from "../views/Home.vue";
-
-
 
 Vue.use(VueRouter);
 
@@ -44,7 +41,11 @@ const routes = [
     path: "/user",
     name: "user",
     component: () =>
-      import("../views/User.vue")
+      import("../views/User.vue"),
+      children: [
+        //{ path: '', component: UserStart },
+        //{ path: ':id', component: UserDetails }
+      ]
   }
 ];
 
@@ -53,4 +54,8 @@ const router = new VueRouter({
   mode: `history`
 });
 
+//router.beforeEach((to, from, next) => {
+  //console.log('global beforeEach');
+  //next();
+//})
 export default router;

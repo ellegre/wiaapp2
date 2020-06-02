@@ -23,8 +23,8 @@ export default {
   },
   methods: {
     logoutApp() {
-      this.$store.dispatch('appLogout')
-    }
+      this.$store.dispatch('appLogout');
+    }   
   }
 };
 </script>

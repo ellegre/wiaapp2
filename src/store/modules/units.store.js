@@ -2,26 +2,23 @@ const wialon = window.wialon;
 const initialState = () => ({
   units: [],
   unit: {
-    icon: null,
-    name: "",
-    plateNumber: "",
-    lastMessage: "",
-    address: "",
-    speed: null,
-    mileage: null,
+    units1: [],
+    icon: [],
+    names: [],
+    plateNumber: [],
+    lastMessage: [],
+    address: [],
+    speed: [],
+    mileage: [],
   },
-  units1: {}
+  unitById: {}
 });
 
 const state = initialState();
-
+//const unit = new schema.Entity('units')
+//console.log(unit);
 const getters = {
-  units1: ({ units, units1 } ) => {
-  return units.match(id => units1[id])
-},
-  getUsersNames: state => {
-    return state.units.map(unit => unit.name)
-  },
+
   units: state => {
     return state.units;
   },
@@ -81,10 +78,18 @@ const actions = {
           return;
         } 
         console.log(data);
-        commit('SET_UNITS', data.items);
-        const unitData = data.items.map(elem => { 
-          elem.name = elem.getName();    // Set unit name      
-          commit('SET_NAME', elem.name);         
+        let units = data.items;
+        commit('SET_UNITS', units);
+        const arrayToObject = (arr, keyField) =>
+          Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
+        let unitById = arrayToObject(units, "_id"); //Converting an array of units to an Object with key = unit id
+        commit('ADD_UNIT__BY_ID', unitById);
+
+
+        data.items.map(elem => { 
+          elem.names = elem.getName(); 
+            // Set unit name      
+          commit('SET_NAMES', elem.names);         
           elem.icon = elem.getIconUrl(); // Set unit icon
           commit('SET_ICON', elem.icon);
           dispatch('setPlateNumber', elem); // Set plate number
@@ -92,7 +97,6 @@ const actions = {
           dispatch('setAddress', elem); // Set unit address
           dispatch('setSpeed', elem); // Set unit speed
           dispatch('setMileage', elem);
-          console.log(unitData);
         });      
       });
     wialon.core.Remote.getInstance().finishBatch(function(){},"initBatch");
@@ -175,8 +179,11 @@ const mutations = {
   SET_UNITS(state, payload) {
     state.units = payload;
   },
-  SET_NAME(state, payload) {
-    state.unit.name = payload;
+  ADD_UNIT__BY_ID(state, payload) {
+    state.unitById = payload;
+  },
+  SET_NAMES(state, payload) {
+    state.unit.names.push(payload);
   },
   SET_ICON(state, payload) {
     state.unit.icon = payload;

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+//import { normalize, schema } from 'normalizr';
 
 // import the auto exporter
 import modules from "./modules";
@@ -97,6 +98,8 @@ export default new Vuex.Store({
       commit('NOT_AUTENTICATED');
       commit('DELETE_SESSION');
       dispatch('reset');
+      //this.$router.push({name: 'home'});
+
     },
     logout({ dispatch }) {  
       return new Promise((resolve, reject) => {
@@ -122,11 +125,12 @@ export default new Vuex.Store({
       // resets state of all the modules
       Object.keys(modules).forEach(moduleName => {
         commit(`${moduleName}/RESET`);
+
       });
     },
     updateValue({ commit }) {
       commit('updateValue', 100);
     }
   },
-  modules
+  modules,
 });
